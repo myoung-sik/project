@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.kms.test.mappers.ItemMapper">
+    <!-- 상품을 데이터베이스에 저장 -->
+    <insert id="insertItem" parameterType="com.kms.test.entities.ItemEntity">
+        INSERT INTO `test`.`item` (`product_id`, `image_url`, `title`, `detail`, `dc_rate`, `dc_price`, `price`, `delivery`, `seller`, `packaging`, `detail_image`, `words`, `kurly_check`, `detail_info`, `is_manual`, `created_at`, `updated_at`, `deleted_at`)
+        VALUES (#{productId}, #{imageUrl}, #{title}, #{detail}, #{dcRate}, #{dcPrice}, #{price}, #{delivery}, #{seller}, #{packaging}, #{detailImage}, #{words}, #{kurlyCheck}, #{detailInfo}, #{isManual}, NOW(), NOW(), NOW())
+    </insert>
+
+    <!-- Index로 상품 조회 -->
+    <select id="getItemByIndex" parameterType="_int" resultType="com.kms.test.entities.ItemEntity">
+        SELECT *
+        FROM `test`.`item`
+        WHERE `index` = #{index}
+    </select>
+
+    <!-- 모든 상품을 조회 -->
+    <select id="getAllItems" resultType="com.kms.test.entities.ItemEntity">
+        SELECT *
+        FROM `test`.`item`
+    </select>
+
+    <select id="getItemByProductId" parameterType="String" resultType="com.kms.test.entities.ItemEntity">
+        SELECT *
+        FROM `test`.`item`
+        WHERE `product_id` = #{productId}
+        LIMIT 1
+    </select>
+
+    <!-- 상품 정보 수정 -->
+    <update id="updateItem" parameterType="com.kms.test.entities.ItemEntity">
+        UPDATE `test`.`item
+        SET
+        `product_id` = #{productId},
+        `image_url` = #{imageUrl},
+        `title` = #{title},
+        `detail` = #{detail},
+        `dc_rate` = #{dcRate},
+        `dc_price` = #{dcPrice},
+        `price` = #{price},
+        `delivery` = #{delivery},
+        `seller` = #{seller},
+        `packaging` = #{packaging},
+        `detail_image` = #{detailImage},
+        `words` = #{words},
+        `kurly_check` = #{kurlyCheck},
+        `detail_info` = #{detailInfo},
+        `is_manual` = #{isManual},
+        `updated_at` = NOW()
+        WHERE `index` = #{index};
+    </update>
+
+    <!-- 상품 삭제 -->
+    <update id="deleteItem">
+        UPDATE `test`.`item`
+        SET `deleted_at` = NOW()
+        WHERE `index` = #{index}
+        AND `deleted_at` IS NULL;
+    </update>
+
+</mapper>
