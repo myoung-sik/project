@@ -105,6 +105,19 @@ document.addEventListener("DOMContentLoaded", function () {
         });
     });
 
+    // 하트 버튼
+    const heartButton = document.getElementById('heartButton');
+    const heartIcon = document.getElementById('heartIcon');
+
+    heartButton.addEventListener('click', function () {
+        // 빨간 하트로 변경
+        if (heartIcon.src.includes('F5A5A5')) {
+            heartIcon.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yNS44MDcgNy44NjNhNS43NzcgNS43NzcgMCAwIDAtOC4xNzIgMEwxNiA5LjQ5N2wtMS42MzUtMS42MzRhNS43NzkgNS43NzkgMCAxIDAtOC4xNzMgOC4xNzJsMS42MzQgMS42MzQgNy40NjYgNy40NjdhMSAxIDAgMCAwIDEuNDE1IDBzMCAwIDAgMGw3LjQ2Ni03LjQ2N2gwbDEuNjM0LTEuNjM0YTUuNzc3IDUuNzc3IDAgMCAwIDAtOC4xNzJ6IiBzdHJva2U9IiNGRjVBNUEiIHN0cm9rZS13aWR0aD0iMS42IiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K';
+        } else {
+            heartIcon.src = 'data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yNS44MDcgNy44NjNhNS43NzcgNS43NzcgMCAwIDAtOC4xNzIgMEwxNiA5LjQ5N2wtMS42MzUtMS42MzRhNS43NzkgNS43NzkgMCAxIDAtOC4xNzMgOC4xNzJsMS42MzQgMS42MzQgNy40NjYgNy40NjdhMSAxIDAgMCAwIDEuNDE1IDBzMCAwIDAgMGw3LjQ2Ni03LjQ2N2gwbDEuNjM0LTEuNjM0YTUuNzc3IDUuNzc3IDAgMCAwIDAtOC4xNzJ6IiBzdHJva2U9IiM1RjAwODAiIHN0cm9rZS13aWR0aD0iMS42IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K';
+        }
+    });
+
     // 공지 버튼
     const buttons = document.querySelectorAll(".goods-notification-button");
     buttons.forEach(button => {
@@ -148,6 +161,42 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     });
+
+    const decreaseBtn = document.getElementById('decreaseBtn');
+    const increaseBtn = document.getElementById('increaseBtn');
+    const quantityDiv = document.getElementById('quantity');
+    const priceSpan = document.getElementById('dcPrice');
+    const totalPriceSpan = document.getElementById('totalPrice');
+
+// 초기값 설정
+    const dcPrice = parseInt(priceSpan.dataset.dcprice.replace(/,/g, ''), 10); // 쉼표 제거 후 숫자로 변환
+    let quantity = 1;
+
+// 초기 총 상품 금액 설정
+    totalPriceSpan.textContent = (dcPrice * quantity).toLocaleString();
+
+// 버튼 클릭 이벤트
+    increaseBtn.addEventListener('click', () => {
+        quantity += 1; // 수량 증가
+        quantityDiv.textContent = quantity; // 수량 표시 업데이트
+        totalPriceSpan.textContent = (dcPrice * quantity).toLocaleString(); // 총 상품 금액 업데이트
+        decreaseBtn.disabled = false; // - 버튼 활성화
+    });
+
+    decreaseBtn.addEventListener('click', () => {
+        if (quantity > 1) {
+            quantity -= 1; // 수량 감소
+            quantityDiv.textContent = quantity; // 수량 표시 업데이트
+            totalPriceSpan.textContent = (dcPrice * quantity).toLocaleString(); // 총 상품 금액 업데이트
+
+            // 수량이 1일 때 - 버튼 비활성화
+            if (quantity === 1) {
+                decreaseBtn.disabled = true;
+            }
+        }
+    });
+
+
 });
 
 function openModal(button) {
@@ -171,3 +220,4 @@ function openModal(button) {
 function closeModal() {
     document.getElementById('reviewModal').style.display = 'none';
 }
+

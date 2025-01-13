@@ -101,13 +101,20 @@
                             <li class="goods-li">
                                 <dt class="select-dt">상품 선택</dt> <!-- 미완성 -->
                                 <dd class="select-dd">
-                                    <div class="select-div1">
+                                    <div class="select-div1" th:if="${product != null}">
                                         <div class="select-div2">
-                                            <div class="select-div3">
-                                                <div class="select-div4">
-                                                    <div class="select-div5">상품을 선택해주세요</div>
-                                                    <input aria-hidden="true" tabindex="-1" class="select-input">
-                                                </div>
+                                            <span class="select-span1" th:text="${product.title}"></span>
+                                        </div>
+                                        <div class="select-div3">
+                                            <div class="select-div4">
+                                                <button type="button" disabled class="select-button1" id="decreaseBtn"></button>
+                                                <div class="select-div5" id="quantity">1</div>
+                                                <button type="button" class="select-button2" id="increaseBtn"></button>
+                                            </div>
+                                            <div class="select-div6">
+                                                <span class="select-span2" th:data-price="${product.price}" th:text="${product.price}"></span>
+                                                <span class="select-span3" id="dcPrice" th:data-dcprice="${product.dcPrice}" th:text="${product.dcPrice}">5,990</span>
+                                                <span class="select-span4">원</span>
                                             </div>
                                         </div>
                                     </div>
@@ -118,13 +125,13 @@
                             <div class="total-div1">
                                 <div class="total-div2">
                                     <span class="total-span1">총 상품 금액 :</span>
-                                    <span class="total-span2">0</span>
+                                    <span class="total-span2" id="totalPrice" th:text="${product.dcPrice}"></span>
                                     <span class="total-span3">원</span>
                                 </div>
                             </div>
                         </div>
                         <div class="goods-button">
-                            <button class="heart-button">
+                            <button class="heart-button" id="heartButton">
                                     <span class="heart-span">
                                         <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMzIiIGhlaWdodD0iMzIiIHZpZXdCb3g9IjAgMCAzMiAzMiIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KICAgIDxwYXRoIGQ9Ik0yNS44MDcgNy44NjNhNS43NzcgNS43NzcgMCAwIDAtOC4xNzIgMEwxNiA5LjQ5N2wtMS42MzUtMS42MzRhNS43NzkgNS43NzkgMCAxIDAtOC4xNzMgOC4xNzJsMS42MzQgMS42MzQgNy40NjYgNy40NjdhMSAxIDAgMCAwIDEuNDE1IDBzMCAwIDAgMGw3LjQ2Ni03LjQ2N2gwbDEuNjM0LTEuNjM0YTUuNzc3IDUuNzc3IDAgMCAwIDAtOC4xNzJ6IiBzdHJva2U9IiM1RjAwODAiIHN0cm9rZS13aWR0aD0iMS42IiBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPgo8L3N2Zz4K"
                                              alt="">
