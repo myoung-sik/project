@@ -15,6 +15,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const formData = new FormData();
         const urlParams = new URLSearchParams(window.location.search);
         const index = urlParams.get('index');
+        const productId = urlParams.get('productId');
 
         if (!index) {
             alert("잘못된 요청입니다.");
@@ -35,7 +36,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     const response = JSON.parse(xhr.responseText);
                     if (response.result === 'success') {
                         alert('수정이 완료되었습니다.');
-                        window.location.href = '/kurly/index';
+                        window.location.href = `/kurly/index?productId=${productId}`;
                     } else {
                         alert('수정에 실패했습니다.');
                     }

@@ -4,8 +4,8 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.kms.test.mappers.InquiryMapper">
     <insert id="insertInquiry" parameterType="com.kms.test.entities.InquiryEntity">
-        INSERT INTO `test`.`inquiry` (`writer`, `title`, `content`, `status`, `created_at`, `updated_at`, `deleted_at`)
-        VALUES (#{writer}, #{title}, #{content}, #{status}, #{createdAt}, #{updatedAt}, #{deletedAt})
+        INSERT INTO `test`.`inquiry` (`writer`, `title`, `content`, `status`, `created_at`, `updated_at`, `deleted_at`, `product_Id`)
+        VALUES (#{writer}, #{title}, #{content}, #{status}, #{createdAt}, #{updatedAt}, #{deletedAt}, #{productId})
     </insert>
 
     <select id="selectAllInquiries" resultType="com.kms.test.entities.InquiryEntity">
@@ -36,5 +36,19 @@
         DELETE FROM `test`.`inquiry`
         WHERE `index` = #{inquiryId}
     </delete>
+
+    <select id="selectInquiriesByProductId" resultType="com.kms.test.entities.InquiryEntity">
+        SELECT *
+        FROM `test`.`inquiry`
+        WHERE `product_id` = #{productId}  <!-- 상품 ID 기준으로 필터링 -->
+        ORDER BY `created_at` DESC
+        LIMIT #{limitCount} OFFSET #{offsetCount}
+    </select>
+
+    <select id="countInquiriesByProductId" resultType="_int">
+        SELECT COUNT(*)
+        FROM `test`.`inquiry`
+        WHERE `product_id` = #{productId}  <!-- 상품 ID 기준으로 필터링 -->
+    </select>
 
 </mapper>

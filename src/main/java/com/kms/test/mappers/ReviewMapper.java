@@ -21,4 +21,8 @@ public interface ReviewMapper {
     int deleteReview(int index);
 
     ReviewEntity selectReviewByIndex(int index);
+
+    int countReviewsByProductId(String productId);
+
+    List<ReviewEntity> selectReviewsByProductId(@Param("productId") String productId, @Param("offsetCount") int offsetCount, @Param("limitCount") int limitCount);
 }

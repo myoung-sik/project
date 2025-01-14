@@ -78,6 +78,17 @@ public class MainController {
         Pair<PageVo, List<InquiryEntity>> pairInquiries = this.inquiryService.getInquiriesByPage(inquiryPage);
         Pair<PageVo, List<ReviewEntity>> pairReviews = this.reviewService.getReviewsByPage(reviewPage);
 
+
+        if (productId != null) {
+            // 특정 상품에 대한 문의와 리뷰 가져오기
+            pairInquiries = this.inquiryService.getInquiriesByProductId(productId, inquiryPage);
+            pairReviews = this.reviewService.getReviewsByProductId(productId, reviewPage);
+        } else {
+            // 모든 상품에 대한 문의와 리뷰 가져오기
+            pairInquiries = this.inquiryService.getInquiriesByPage(inquiryPage);
+            pairReviews = this.reviewService.getReviewsByPage(reviewPage);
+        }
+
         // 총 리뷰 개수 가져오기
         int totalReviews = this.reviewService.getTotalReviewCount();
 
@@ -125,7 +136,10 @@ public class MainController {
     }
 
     @RequestMapping(value = "/review", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getReview(@RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+    public ModelAndView getReview(@RequestParam(value = "productId") String productId,
+                                  @RequestParam(value = "page", required = false, defaultValue = "1") int page) {
+
+        System.out.println("productId: " + productId);
         Pair<PageVo, List<ReviewEntity>> pair = this.reviewService.getReviewsByPage(page);
         List<ReviewEntity> reviews = pair.getRight();
 
@@ -139,6 +153,7 @@ public class MainController {
         ModelAndView modelAndView = new ModelAndView("write/review");
         modelAndView.addObject("pageVo", pair.getLeft());
         modelAndView.addObject("reviews", reviews);
+        modelAndView.addObject("productId", productId); // productId를 추가
         return modelAndView;
     }
 
@@ -146,11 +161,15 @@ public class MainController {
     @ResponseBody
     public String postReview(@RequestParam(value = "title") String title,
                              @RequestParam(value = "content") String content,
+                             @RequestParam(value = "productId") String productId,
                              @RequestParam(value = "image", required = false) MultipartFile imageFile) throws IOException {
+        System.out.println("productId: " + productId);
+
         ReviewEntity review = new ReviewEntity();
         review.setWriter("작성자");
         review.setTitle(title);
         review.setContent(content);
+        review.setProductId(productId); // 받은 productId를 사용
 
         JSONObject response = new JSONObject();
         Result result = this.reviewService.write(review, imageFile);
@@ -177,7 +196,8 @@ public class MainController {
     }
 
     @RequestMapping(value = "/modify", method = RequestMethod.GET, produces = MediaType.TEXT_HTML_VALUE)
-    public ModelAndView getModify(@RequestParam(value = "index", required = false, defaultValue = "0") int index) {
+    public ModelAndView getModify(@RequestParam(value = "index", required = false, defaultValue = "0") int index,
+                                  @RequestParam(value = "productId", required = false) String productId) {
         ModelAndView modelAndView = new ModelAndView();
 
         // index에 해당하는 리뷰를 가져옵니다.
@@ -188,7 +208,12 @@ public class MainController {
             modelAndView.addObject("review", review); // 리뷰 객체를 HTML로 전달
             modelAndView.setViewName("goods/modify"); // "goods/modify.html"로 이동
         } else {
-            modelAndView.setViewName("redirect:/kurly/index");
+            // 수정 후 원래의 상품 페이지로 리다이렉트
+            if (productId != null) {
+                modelAndView.setViewName("redirect:/kurly/index?productId=" + productId);
+            } else {
+                modelAndView.setViewName("redirect:/kurly/index");
+            }
         }
         // 기본 뷰 페이지 설정
         return modelAndView;

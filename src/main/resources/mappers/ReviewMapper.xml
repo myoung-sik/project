@@ -5,14 +5,14 @@
 <mapper namespace="com.kms.test.mappers.ReviewMapper">
     <insert id="insertReview" parameterType="com.kms.test.entities.ReviewEntity">
         INSERT INTO `test`.`review` (`writer`, `title`, `content`, `image_index`, `created_at`, `updated_at`,
-        `deleted_at`)
-        VALUES (#{writer}, #{title}, #{content}, #{imageIndex}, #{createdAt}, #{updatedAt}, #{deletedAt})
+        `deleted_at`, `product_id`)
+        VALUES (#{writer}, #{title}, #{content}, #{imageIndex}, #{createdAt}, #{updatedAt}, #{deletedAt}, #{productId})
     </insert>
 
     <select id="selectAllReviews" resultType="com.kms.test.entities.ReviewEntity">
         SELECT *
         FROM `test`.`review`
-        WHERE `deleted_at` IS NULL
+        WHERE `product_id` = #{productId} AND `deleted_at` IS NULL
         ORDER BY created_at DESC;
     </select>
 
@@ -25,7 +25,7 @@
     <select id="selectReviewsByPage" resultType="com.kms.test.entities.ReviewEntity">
         SELECT *
         FROM `test`.`review`
-        WHERE `deleted_at` IS NULL
+        WHERE `product_id` = #{productId} AND `deleted_at` IS NULL
         ORDER BY `created_at` DESC
         LIMIT #{limitCount} OFFSET #{offsetCount};
     </select>
@@ -58,5 +58,19 @@
         SELECT *
         FROM `test`.`review`
         WHERE `index` = #{index} AND `deleted_at` IS NULL
+    </select>
+
+    <select id="selectReviewsByProductId" resultType="com.kms.test.entities.ReviewEntity">
+        SELECT *
+        FROM `test`.`review`
+        WHERE `product_id` = #{productId} AND `deleted_at` IS NULL
+        ORDER BY `created_at` DESC
+        LIMIT #{limitCount} OFFSET #{offsetCount};
+    </select>
+
+    <select id="countReviewsByProductId" resultType="_int">
+        SELECT COUNT(*)
+        FROM `test`.`review`
+        WHERE `product_id` = #{productId} AND `deleted_at` IS NULL;
     </select>
 </mapper>

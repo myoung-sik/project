@@ -16,6 +16,7 @@ public class ReviewEntity {
     private String title;
     private String content;
     private Integer imageIndex;
+    private String productId;
     private List<ImageEntity> images;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;

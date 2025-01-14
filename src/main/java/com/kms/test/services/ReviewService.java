@@ -134,4 +134,17 @@ public class ReviewService {
     public ReviewEntity getReviewByIndex(int index) {
         return reviewMapper.selectReviewByIndex(index);
     }
+
+    public Pair<PageVo, List<ReviewEntity>> getReviewsByProductId(String productId, int reviewPage) {
+        // 전체 리뷰 수 조회
+        int totalReviews = reviewMapper.countReviewsByProductId(productId);
+
+        // 페이지 정보 생성
+        PageVo pageVo = new PageVo(reviewPage, totalReviews);
+
+        // 페이징된 리뷰 목록 조회
+        List<ReviewEntity> reviews = reviewMapper.selectReviewsByProductId(productId, pageVo.countPerPage, pageVo.offsetCount);
+
+        return Pair.of(pageVo, reviews);
+    }
 }

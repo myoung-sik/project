@@ -23,9 +23,7 @@
                             <div class="detail-div4">
                                 <div class="detail-div5">
                                         <span class="detail-span">
-                                            <img class="detail-image"
-                                                 th:src="@{${product.detailImage}}"
-                                                 alt="">
+                                            <img class="detail-image" th:src="@{${product.detailImage}}" alt="">
                                         </span>
                                 </div>
                             </div>
@@ -184,8 +182,7 @@
                             <div class="goods-wrap">
                                 <div class="goods-intro">
                                     <div class="pic">
-                                        <img th:src="@{${product.detailImage}}"
-                                             alt="">
+                                        <img th:src="@{${product.detailImage}}" alt="">
                                     </div>
                                     <div class="context last">
                                         <h3>
@@ -751,7 +748,7 @@
                                 </a>
                                 <div class="page-button-div3">
                                     <button class="goods-inquiry-button">
-                                        <a class="goods-inquiry-span1" th:href="@{'/kurly/review'}">후기쓰기</a>
+                                        <a class="goods-inquiry-span1" th:href="@{'/kurly/review?productId=' + ${product.getProductId()}}">후기쓰기</a>
                                     </button>
                                 </div>
                             </div>
